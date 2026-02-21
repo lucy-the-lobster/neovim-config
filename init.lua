@@ -46,6 +46,8 @@ vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 vim.opt.updatetime = 50
 vim.opt.wrap = true
+vim.treesitter.language.register("vim", "TelescopePrompt")
+vim.treesitter.language.register("vim", "TelescopeResults")
 
 -- Only enable system clipboard if running locally with display server
 if os.getenv("DISPLAY") or os.getenv("WAYLAND_DISPLAY") then
@@ -573,22 +575,29 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		lazy = false,
 		build = ":TSUpdate",
-		config = function()
-			require("nvim-treesitter").setup({
-				install_dir = vim.fn.stdpath("data") .. "/site",
-			})
-			-- Enable highlighting for all filetypes
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "*" },
-				callback = function()
-					vim.treesitter.start()
-				end,
-			})
-		end,
-	},
-	-- Additional plugins
+		opts = {
+			ensure_installed = {
+				"bash",
+				"json",
+				"c",
+				"diff",
+				"html",
+				"lua",
+				"luadoc",
+				"markdown",
+				"markdown_inline",
+				"query",
+				"vim",
+				"vimdoc",
+			},
+			highlight = {
+				enable = true,
+				additional_vim_regex_highlighting = { "ruby" },
+			},
+			indent = { enable = true, disable = { "ruby" } },
+		},
+	}, -- Additional plugins
 	{
 		"folke/trouble.nvim",
 		opts = {},
