@@ -65,6 +65,7 @@ vim.keymap.set("i", "<down>", "<nop>", { noremap = true })
 vim.keymap.set("n", "<C-down>", "ddp", { desc = "Move line down" })
 vim.keymap.set("n", "<C-up>", "ddkP", { desc = "Move line up" })
 
+vim.keymap.set("i", "<Leader><Leader>", "<Esc>", { desc = "Exit insert mode" })
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
