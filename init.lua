@@ -26,8 +26,6 @@ vim.o.timeoutlen = 300
 
 vim.opt.backup = false
 vim.opt.colorcolumn = "80"
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.ttyfast = true
 vim.opt.gdefault = true
 vim.opt.hlsearch = true
@@ -45,12 +43,7 @@ vim.opt.undofile = true
 vim.opt.updatetime = 50
 vim.opt.wrap = true
 
--- Only enable system clipboard if running locally with display server
-if os.getenv("DISPLAY") or os.getenv("WAYLAND_DISPLAY") then
-	vim.schedule(function()
-		vim.o.clipboard = "unnamedplus"
-	end)
-end
+vim.o.clipboard = "unnamedplus"
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
@@ -617,6 +610,26 @@ require("lazy").setup({
 			version = "^5",
 			lazy = true,
 		},
+		{
+			"kevinhwang91/nvim-ufo",
+			dependencies = "kevinhwang91/promise-async",
+			config = function()
+				vim.opt.foldmethod = "expr"
+				vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+				vim.opt.foldlevel = 99
+				vim.opt.foldlevelstart = 99
+
+				require("ufo").setup({
+					provider_selector = function(bufnr, filetype, buftype)
+						if filetype == "vue" then
+							return { "lsp", "indent" }
+						end
+						return { "treesitter", "indent" }
+					end,
+				})
+			end,
+		},
+
 		{ "windwp/nvim-ts-autotag", opts = {} },
 		{ "norcalli/nvim-colorizer.lua", opts = {} },
 		{ "ethanholz/nvim-lastplace", opts = {} },
