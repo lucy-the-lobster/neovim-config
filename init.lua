@@ -43,8 +43,21 @@ vim.opt.undofile = true
 vim.opt.updatetime = 50
 vim.opt.wrap = true
 
-vim.o.clipboard = "unnamedplus"
-
+vim.g.clipboard = {
+	name = "OSC 52",
+	copy = {
+		["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+		["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+	},
+	paste = {
+		["+"] = function()
+			return {}
+		end, -- disable paste, use Ctrl+Shift+V instead
+		["*"] = function()
+			return {}
+		end,
+	},
+}
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 vim.keymap.set("", "<up>", "<nop>", { noremap = true })
